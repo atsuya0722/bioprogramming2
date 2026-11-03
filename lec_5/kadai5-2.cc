@@ -71,7 +71,7 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
             }
         }
         
-        int unique_max_tissue=max_element(unique_count.begin(), unique_count.end());
+        int unique_max_tissue=max_element(unique_count.begin(), unique_count.end())-unique_count.begin();
         cout << "もっとも組織特異的発現遺伝子数が多い組織は" << tissue_name[unique_max_tissue] << endl;
 
         for(int i=0; i<NUM_GENES; i++){
