@@ -2,7 +2,6 @@
 #include<fstream>
 #include<vector>
 #include<string>
-#include<cmath>
 #include<algorithm>
 
 #define NUM_TISSUES 68
@@ -41,7 +40,7 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
         vector<double> max_tpm(NUM_GENES,0);
 
         for(int i=0; i<NUM_GENES; i++){
-            for(int j=0; NUM_TISSUES; j++){
+            for(int j=0; j<NUM_TISSUES; j++){
                 if(max_tpm[i]<expression_matrix[i][j]){
                     max_tpm[i]=expression_matrix[i][j];               
                 }
@@ -50,16 +49,16 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
 
         vector<double> unique_index(NUM_GENES,0);
         for(int i=0; i<NUM_GENES; i++){
-            int sum=0;
+            double sum=0;
             for(int j=0; j<NUM_TISSUES; j++){
-                sum=1-expression_matrix[i][j]/max_tpm[i];
+                sum+=1-expression_matrix[i][j]/max_tpm[i];
             }
             unique_index[i]=sum/(NUM_TISSUES-1);
         }
 
-        vector<int> unique_count(NUM_TISSUES,0)
-        for(int i=0, i<NUM_GENES; i++){
-            if(unique_index[i]>0.85){
+        vector<int> unique_count(NUM_TISSUES,0);
+        for(int i=0; i<NUM_GENES; i++){
+            if(unique_index[i]>=0.85){
                 int max_tissue_num=0;
                 double max_tissue_value=0;
                 for(int j=0; j<NUM_TISSUES; j++){
@@ -68,7 +67,7 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
                         max_tissue_num=j;
                     }
                 }
-                unique_count[j]++;
+                unique_count[max_tissue_num]++;
             }
         }
         
@@ -76,7 +75,7 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
         cout << "もっとも組織特異的発現遺伝子数が多い組織は" << tissue_name[unique_max_tissue] << endl;
 
         for(int i=0; i<NUM_GENES; i++){
-            if(unique_index[i]>0.95 && expression_matrix[i][unique_max_tissue]){
+            if(unique_index[i]>=0.95 && expression_matrix[i][unique_max_tissue]>=1000){
                 cout << gene_name[i] << endl;
             }
         }
