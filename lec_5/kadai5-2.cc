@@ -80,3 +80,15 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
             }
         }
     }
+
+//もっとも組織特異的発現遺伝子数が多い組織はTestis
+//Testisにおいて特異性が高く、TPM1000以上の遺伝子
+//SMCP
+//LELP1
+//TNP1
+//PHF7
+//CRISP2
+//PRM2
+//PRM1
+//CMTM2
+//YBX2
