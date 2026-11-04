@@ -69,8 +69,9 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
     }
 }
 
-void Pretreatment(vector<vector<double>>& expression_matrix){
+void Pretreatment(vector<vector<double>>& expression_matrix, vector<string>& gene_name){
     vector<int> count(NUM_GENES,0);
+    vector<double> mean(NUM_GENES,0);
     vector<double> disp(NUM_GENES,0);
     for(int i=0; i<NUM_GENES; i++){
         for(int j=0; j<NUM_TISSUES; j++){
@@ -80,15 +81,38 @@ void Pretreatment(vector<vector<double>>& expression_matrix){
             mean[i]+=expression_matrix[i][j];
         }
         mean[i] /= NUM_TISSUES;
+
         for(int j=0; j<NUM_TISSUES; j++){
             disp[i]+=pow(expression_matrix[i][j]-mean[i],2)/NUM_TISSUES;
         }
     }
     
-    vector<vector<double>> filtered;
+    vector<vector<double>> filteredj_matrix;
+    vector<string> filtered_gene_name;
     for(int i=0; i<NUM_GENES; i++){
-        if(count[i]<NUM_TISSUES*0.8 && disp[i]>100){
-            
+         vector<double> temp;
+        for(int j=0; j<NUM_TISSUES; j++){
+            if(expression_matrix[i][j]>100){
+                expression_matrix[i][j]=100;
+            }
+            temp.push_back(expression_matrix[i][j]);
         }
+        filtered.push_back(temp);
+        filtered_gene_name.push_back(gene_name[i]);
     }
+}
+
+int Main(void){
+    vector<string> tissue_name(NUM_TISSUES, "");
+    vector<string> gene_name(NUM_GENES, "");
+    vector<vector<double>> expression_matrix(NUM_GENES, vector<double>(NUM_TISSUES, 0.0));
+    LoadExpressionFile("gene_expression.txt",tissue_name, gene_name, expression_matrix);
+
+    CalCorrelation(expression_matrix, gene_name);
+    
+    vector<vector<double>> filtered_matrix;
+    vector<string> filtered_gene_name;
+    Pretreatment(expression_matrix, gene_name);
+    CalCorrelation(filtered_matrix, filtered_gene_name);
+    return 0;
 }
