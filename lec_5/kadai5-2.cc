@@ -92,3 +92,6 @@ void LoadExpressionFile(string file_name, vector<string>& tissue_name, vector<st
 //PRM1
 //CMTM2
 //YBX2
+
+//TNP1は哺乳類の伸長中の精子細胞において、ヒストンをプロタミンに置き換える過程で重要な役割を果たす。
+//凝縮中の精子細胞では、このタンパク質はヌクレオソームに結合し、プロタミンの呼び込みと成熟・加工を促進する。プロタミンは、ヒストンを取り除く役割を担っている。
