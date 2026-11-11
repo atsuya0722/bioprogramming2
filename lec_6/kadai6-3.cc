@@ -15,10 +15,14 @@ vector<double> SeqToVector(string seq) {
         aa_to_index[aa_order[i]] = i;
     }
 
-    vector<double> aa_prob(20, 0.0);
+    vector<double> aa_prob(400, 0.0);
 
-    for (int i = 0; i < 30; i++) {
-        aa_prob[aa_to_index[seq[i]]] += 1.0 / 30;
+    for (int i = 0; i < 29; i++) {
+        int a = aa_to_index[seq[i]];
+        int b = aa_to_index[seq[i + 1]];
+        int index = a * 20 + b;
+
+        aa_prob[index] += 1.0 / 29;
     }
 
     return aa_prob;
@@ -49,7 +53,7 @@ void LoadData(string filename, vector<vector<double>>& data, vector<int>& labels
 double Distance(const vector<double>& x, const vector<double>& y){
     double sum = 0.0;
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 400; i++) {
         sum += pow(x[i] - y[i], 2);
     }
 
@@ -57,7 +61,7 @@ double Distance(const vector<double>& x, const vector<double>& y){
 }
 
 int Predict(const vector<double>& test, const vector<vector<double>>& train_data, const vector<int>& train_labels){
-    int k=7;
+    int k=1;
     vector<double> min_dists(k,numeric_limits<double>::max());
     vector<int> min_labels(k,0);
     int prediction = 0;
@@ -144,3 +148,33 @@ int main() {
 
     return 0;
 }
+
+
+/*
+k=1
+TP: 94
+TN: 463
+FP: 90
+FN: 93
+Balanced Accuracy: 0.669963
+
+k=3
+TP: 87
+TN: 482
+FP: 71
+FN: 100
+Balanced Accuracy: 0.668425
+
+k=5
+TP: 89
+TN: 496
+FP: 57
+FN: 98
+Balanced Accuracy: 0.686431
+
+k=7
+TP: 83
+TN: 505
+FP: 48
+FN: 104
+Balanced Accuracy: 0.678525*/
