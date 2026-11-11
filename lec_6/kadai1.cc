@@ -24,11 +24,7 @@ vector<double> SeqToVector(string seq) {
     return aa_prob;
 }
 
-void LoadData(
-    string filename,
-    vector<vector<double>>& data,
-    vector<int>& labels
-) {
+void LoadData(string filename, vector<vector<double>>& data, vector<int>& labels){
     ifstream ifs(filename);
 
     if (!ifs) {
@@ -50,10 +46,7 @@ void LoadData(
     }
 }
 
-double Distance(
-    const vector<double>& x,
-    const vector<double>& y
-) {
+double Distance(const vector<double>& x, const vector<double>& y){
     double sum = 0.0;
 
     for (int i = 0; i < 20; i++) {
@@ -63,11 +56,7 @@ double Distance(
     return sqrt(sum);
 }
 
-int Predict(
-    const vector<double>& test,
-    const vector<vector<double>>& train_data,
-    const vector<int>& train_labels
-) {
+int Predict(const vector<double>& test, const vector<vector<double>>& train_data, const vector<int>& train_labels){
     double min_dist = numeric_limits<double>::max();
     int prediction = 0;
 
@@ -102,13 +91,19 @@ int main() {
                            train_data, train_labels);
 
         int actual = test_labels[i];
-
-        if (actual == 1 && pred == 1) TP++;
-        if (actual == 0 && pred == 0) TN++;
-        if (actual == 0 && pred == 1) FP++;
-        if (actual == 1 && pred == 0) FN++;
+        if (actual == 1 && pred == 1){
+            TP++;
+        }
+        if (actual == 0 && pred == 0){
+            TN++;
+        } 
+        if (actual == 0 && pred == 1){
+            FP++;
+        } 
+        if (actual == 1 && pred == 0){
+            FN++;
+        }
     }
-
     double sensitivity = (double)TP / (TP + FN);
     double specificity = (double)TN / (TN + FP);
 
